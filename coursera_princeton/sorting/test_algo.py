@@ -63,19 +63,25 @@ if __name__ == '__main__':
             assert(data_new == data_sorted)
 
             results[sortalgo.__name__][data_type] = stop-start
+            xfactor = int((stop-start)/results[sorted.__name__][data_type]) 
+            results[sortalgo.__name__][data_type+"_xfactor"] = xfactor
 
     # Print result summary
-    table = Texttable()
+    table = Texttable(max_width=0)
     len_d = len(data_set.keys())
-    table.set_cols_dtype(['t'] + ['t']*len_d)
+    table.set_cols_dtype(['t'] + ['t','t']*len_d)
 
-    header = ["Fn"] + data_set.keys()
+    header = ["Fn"] 
+    for data_type in data_set.keys():
+        header += [data_type]
+        header += ["x"] 
     table.add_row(header)
     for sortalgo in algos:
         s_name = sortalgo.__name__ 
         row_s = [s_name]
         for data_type in data_set.keys():
             row_s += ["%s" % (results[s_name][data_type])]
+            row_s += ["x%s" % (results[s_name][data_type+"_xfactor"])]
         table.add_row(row_s)    
     print table.draw() + "\n"                
         
