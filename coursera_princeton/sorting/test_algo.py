@@ -11,26 +11,27 @@ from texttable import Texttable
 import custom_sort_lib as mysort
  
 def generate_data():
-    data_s = range(0, 16)
+    data_s = range(0, 30000)
     data_r = [i for i in data_s]
     random.shuffle(data_r)
     return data_s, data_s[::-1], data_r
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
-    #logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+    #logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
     data_sorted, data_sorted_reverse, data_random = generate_data()
 
-    algos = (   #sorted, 
-                #mysort.selection_sort,
-                #mysort.insertion_sort,
-                #mysort.shell_sort,
+    algos = (   sorted, 
+                mysort.selection_sort,
+                mysort.insertion_sort,
+                mysort.shell_sort,
                 mysort.merge_sort,
+                mysort.merge_sort_nr,
             )
 
-    data_set = {#"data_random": data_random, 
-                #"data_sorted": data_sorted, 
+    data_set = {"data_random": data_random, 
+                "data_sorted": data_sorted, 
                 "data_sorted_reverse": data_sorted_reverse,
                } 
 

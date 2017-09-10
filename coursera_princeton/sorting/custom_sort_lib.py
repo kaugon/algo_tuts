@@ -5,6 +5,8 @@
 ############################################
 import logging
 
+#########################
+
 def selection_sort(data):
     ## - At ith iteration, element at ith position is at its right place
     ## - elements left of i, is sorted and smaller than a[i]
@@ -22,6 +24,8 @@ def selection_sort(data):
         #logging.debug("Iteration %s : %s" % (itr,data))
     return data
 
+#########################
+
 def insertion_sort(data):
     # sort data as it arrives
     # at ith iteration data on left of i is sorted
@@ -36,6 +40,8 @@ def insertion_sort(data):
             data[j-1], data[j] = data[j], data[j-1]
             #logging.debug("Iteration %s : %s" % (itr,data))
     return data
+
+#########################
 
 def shell_sort(data):
     # base sort is still insertion sort
@@ -65,10 +71,12 @@ def shell_sort(data):
         h = int(h/3)
     return data
 
+#########################
+## Merge Sort - Recursive
+#########################
 __ms_itr = 0
 def __ms_merge(data, aux, low, mid, hi):
     global __ms_itr
-    __ms_itr += 1
     #logging.debug("Iteration %s : lmh (%s %s %s)" % (__ms_itr, low, mid, hi))
     ###logging.debug("Iteration %s : aux: %s" % (__ms_itr,aux))
     k = low
@@ -93,6 +101,7 @@ def __ms_merge(data, aux, low, mid, hi):
             j += 1
         k += 1
     #logging.debug("Iteration %s : %s" % (__ms_itr,data))
+    __ms_itr += 1
 
 def __ms_sort(data, aux, low, hi):
     if hi <= low: return
@@ -109,6 +118,29 @@ def merge_sort(data):
     n = len(data)
     aux = [int(-1)]*n
     __ms_sort(data, aux, 0, n-1)
+    return data
+
+###############################
+## Merge Sort non-recursive
+###############################
+def __ms_sort_nr(data, aux, low, hi):
+    global __ms_itr
+    ws = 1
+    while ws <= hi+1:
+        #logging.debug("Iteration %s : ws(%s)" % (__ms_itr,ws))
+        for i in range(low+ws, hi+1, 2*ws):
+            # optimize here if its already sorted
+            if data[i-1] > data[i]:
+                h = min(i+ws-1, hi)
+                __ms_merge(data, aux, i-ws, i-1, h)
+        ws = ws+ws
+
+def merge_sort_nr(data):
+    global __ms_itr
+    __ms_itr=0
+    n = len(data)
+    aux = [int(-1)]*n
+    __ms_sort_nr(data, aux, 0, n-1)
     return data
 
 
