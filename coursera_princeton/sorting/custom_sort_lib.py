@@ -4,6 +4,7 @@
 ## All elementery sort algos
 ############################################
 import logging
+import random
 
 #########################
 
@@ -76,6 +77,8 @@ def shell_sort(data):
 #########################
 __ms_itr = 0
 def __ms_merge(data, aux, low, mid, hi):
+    # both low and hi are indices included
+    # mid is index to last element of first array
     global __ms_itr
     #logging.debug("Iteration %s : lmh (%s %s %s)" % (__ms_itr, low, mid, hi))
     ###logging.debug("Iteration %s : aux: %s" % (__ms_itr,aux))
@@ -143,4 +146,71 @@ def merge_sort_nr(data):
     __ms_sort_nr(data, aux, 0, n-1)
     return data
 
+###############################
+## Quick Sort
+###############################
+__qs_itr = 0
+def __qs_partition(data, low, hi):
+    global __qs_itr
+    pivot, i, j = low, low+1, hi
+    #logging.debug("Iteration %s : lh(%s %s) %s" % (__qs_itr, low, hi, data[low:hi+1]))
+
+    while True:
+        # Left: first largest element than pivot
+        # dont cross the boundry
+        while i<= hi and data[i] <= data[pivot]:
+            i += 1 
+
+        # Right: first smallest element than pivot
+        # dont cross i
+        while j >= i and data[j] > data[pivot]: 
+            j -= 1
+
+        #logging.debug("Iteration %s : ij(%s %s)" % (__qs_itr,i,j))
+
+        # this assert would never happen becasue above while condition is j>=i
+        # just adding this as sanity for unintended code modification
+        assert( j != i)
+
+        # exit condition
+        if j < i: break
+ 
+        # put them in correct partitions
+        data[i], data[j] = data[j], data[i]
+        i += 1
+        j -= 1
+        #logging.debug("Iteration %s : %s" % (__qs_itr,data))
+
+    # put pivoted element at right jth place
+    if pivot != j:
+        data[j], data[pivot] = data[pivot], data[j]
+
+    #logging.debug("Iteration %s : p(%s) : %s" % (__qs_itr, j, data))
+    __qs_itr += 1
+
+    # pivot elemnt is at j
+    return j 
+
+def __qs_sort(data, low, hi):
+    # both low and hi are indices included
+    # pivot is index to last element of first array
+
+    if low < hi:
+        pivot = __qs_partition(data, low, hi)
+        # FIXME: boundtry condition checks here ??
+        if pivot > low:
+            __qs_sort(data, low, pivot-1)   
+        if pivot < hi:
+            __qs_sort(data, pivot+1, hi)    
+
+def quick_sort(data, shuffle=False):
+    global __qs_itr
+    __qs_itr = 0
+    if shuffle:
+        random.shuffle(data)
+    __qs_sort(data, 0, len(data)-1)
+    return data
+
+def quick_sort_shuffle(data):
+    return quick_sort(data, shuffle=True)
 

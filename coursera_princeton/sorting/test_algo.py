@@ -14,6 +14,7 @@ def generate_data():
     data_s = range(0, 30000)
     data_r = [i for i in data_s]
     random.shuffle(data_r)
+
     return data_s, data_s[::-1], data_r
 
 if __name__ == '__main__':
@@ -28,6 +29,8 @@ if __name__ == '__main__':
                 mysort.shell_sort,
                 mysort.merge_sort,
                 mysort.merge_sort_nr,
+                #mysort.quick_sort,  DONT USE THIS ONE. with sorted arrays, recursion depth issue. Its expected.
+                mysort.quick_sort_shuffle,
             )
 
     data_set = {"data_random": data_random, 
@@ -40,19 +43,19 @@ if __name__ == '__main__':
         results[sortalgo.__name__] = {}
             
     for data_type in data_set:
-        #logging.info("")
         logging.info("="*25)
         logging.info("Testing data set: %s\n", data_type)
+
         data_test = data_set[data_type]
 
         for sortalgo in algos:
             logging.info("Fn: %s" % (sortalgo.__name__))
 
-            # input data
             data_input = [i for i in data_test]
             logging.debug("Input: %s" % data_input)
             logging.debug("Expected: %s" % data_sorted)
 
+            # Algo execution
             start = time.time()
             data_new = sortalgo(data_input)
             stop = time.time()
@@ -60,8 +63,10 @@ if __name__ == '__main__':
             logging.info("Execution time: %s\n" % (stop-start))
             logging.debug("Output: %s" % data_new)
 
+            # sanity
             assert(data_new == data_sorted)
 
+            # summary
             results[sortalgo.__name__][data_type] = stop-start
             xfactor = int((stop-start)/results[sorted.__name__][data_type]) 
             results[sortalgo.__name__][data_type+"_xfactor"] = xfactor
