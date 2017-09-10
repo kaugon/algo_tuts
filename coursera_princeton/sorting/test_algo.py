@@ -6,11 +6,12 @@
 import random
 import time
 import logging
+from texttable import Texttable
+
 import custom_sort_lib as mysort
-import argparse
  
 def generate_data():
-    data_s = range(0, 20000)
+    data_s = range(0, 100)
     data_r = [i for i in data_s]
     random.shuffle(data_r)
     return data_s, data_s[::-1], data_r
@@ -24,6 +25,7 @@ if __name__ == '__main__':
     algos = (   sorted, 
                 mysort.selection_sort,
                 mysort.insertion_sort,
+                mysort.shell_sort,
             )
 
     data_set = {"data_random": data_random, 
@@ -31,6 +33,10 @@ if __name__ == '__main__':
                 "data_sorted_reverse": data_sorted_reverse,
                } 
 
+    results = {}
+    for sortalgo in algos:
+        results[sortalgo.__name__] = {}
+            
     for data_type in data_set:
         #logging.info("")
         logging.info("="*25)
@@ -53,4 +59,22 @@ if __name__ == '__main__':
             logging.debug("Output: %s" % data_new)
 
             assert(data_new == data_sorted)
+
+            results[sortalgo.__name__][data_type] = stop-start
+
+    # Print result summary
+    table = Texttable()
+    len_d = len(data_set.keys())
+    table.set_cols_dtype(['t'] + ['t']*len_d)
+
+    header = ["Fn"] + data_set.keys()
+    table.add_row(header)
+    for sortalgo in algos:
+        s_name = sortalgo.__name__ 
+        row_s = [s_name]
+        for data_type in data_set.keys():
+            row_s += ["%s" % (results[s_name][data_type])]
+        table.add_row(row_s)    
+    print table.draw() + "\n"                
+        
             
