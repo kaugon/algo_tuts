@@ -63,4 +63,52 @@ def shell_sort(data):
                 else:
                     break;
         h = int(h/3)
-    return data     
+    return data
+
+__ms_itr = 0
+def __ms_merge(data, aux, low, mid, hi):
+    global __ms_itr
+    __ms_itr += 1
+    #logging.debug("Iteration %s : lmh (%s %s %s)" % (__ms_itr, low, mid, hi))
+    ###logging.debug("Iteration %s : aux: %s" % (__ms_itr,aux))
+    k = low
+    while k <= hi:
+        aux[k] = data[k]
+        k += 1
+    ###logging.debug("Iteration %s : aux: %s" % (__ms_itr,aux))
+
+    i, j, k = low, mid+1, low
+    while k <= hi:
+        if i > mid: 
+            data[k] = aux[j]
+            j += 1
+        elif j > hi: 
+            data[k] = aux[i]
+            i += 1
+        elif aux[i] <= aux[j]: 
+            data[k] = aux[i]
+            i += 1
+        else:
+            data[k] = aux[j]
+            j += 1
+        k += 1
+    #logging.debug("Iteration %s : %s" % (__ms_itr,data))
+
+def __ms_sort(data, aux, low, hi):
+    if hi <= low: return
+    mid = low + int((hi-low)/2)
+    __ms_sort(data, aux, low, mid)
+    __ms_sort(data, aux, mid+1, hi)
+    # if both halfs already in sorted merge, we dont need to do anything. 
+    if data[mid] <= data[mid+1]: return
+    __ms_merge(data, aux, low, mid, hi)
+
+def merge_sort(data):
+    global __ms_itr
+    __ms_itr=0
+    n = len(data)
+    aux = [int(-1)]*n
+    __ms_sort(data, aux, 0, n-1)
+    return data
+
+
