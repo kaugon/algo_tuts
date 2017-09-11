@@ -12,6 +12,7 @@ import custom_sort_lib as mysort
  
 def generate_data():
     data_s = range(0, 30000)
+    #data_s = range(0, 16)
     data_r = [i for i in data_s]
     random.shuffle(data_r)
 
@@ -29,8 +30,9 @@ if __name__ == '__main__':
                 mysort.shell_sort,
                 mysort.merge_sort,
                 mysort.merge_sort_nr,
-                #mysort.quick_sort,  DONT USE THIS ONE. with sorted arrays, recursion depth issue. Its expected.
+                ###mysort.quick_sort,  DONT USE THIS ONE. with sorted arrays, recursion depth issue. Its expected.
                 mysort.quick_sort_shuffle,
+                mysort.heap_sort,
             )
 
     data_set = {"data_random": data_random, 

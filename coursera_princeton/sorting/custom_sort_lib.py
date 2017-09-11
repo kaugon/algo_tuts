@@ -214,3 +214,64 @@ def quick_sort(data, shuffle=False):
 def quick_sort_shuffle(data):
     return quick_sort(data, shuffle=True)
 
+###############################
+## Heap Sort (Binary)
+###############################
+__hs_itr = 0
+def __hs_sink(data, k, n):
+    global __hs_itr
+    # parent node of k that should be sinked
+    # its children are at 2k+1, 2k+2
+    while True:
+        __hs_itr += 1
+        j = 2*k+1
+        # finished thru all child nodes
+        if j >= n:
+            break
+        # pick up bigger child
+        v1 = j
+        #logging.debug("Iteration %s : n(%s) rcc(%s %s %s)" % (__hs_itr, n, k, j, j+1))
+        if j+1 < n and data[v1] < data[j+1]:
+            v1 = j+1
+        # is child bigger than parent, swap
+        if data[k] < data[v1]:
+            data[k], data[v1] = data[v1], data[k]
+            #logging.debug("Iteration %s : pc(%s %s) : %s" % (__hs_itr, k, v1, data))
+            k = v1
+        else:
+            # parent is at right location
+            break
+
+def __hs_construct_heap(data):
+    n = len(data)
+    # Start with last parent node
+    # in tree of n nodes, parent node will always be at n/2
+    for k in range(int(n/2)-1, -1, -1):
+        __hs_sink(data, k, n) 
+
+def __hs_sort_heap(data):
+    global __hs_itr
+    n = len(data)
+    hi = n-1
+    # Root node is always the max
+    while True:
+        # take root, exchange with last element. Root is t proper place in array
+        data[hi], data[0] = data[0], data[hi]
+        #logging.debug("Iteration %s : sort(%s) : %s" % (__hs_itr, hi, data))
+        # root is at its sorted place
+        if hi <= 1:
+            break;
+        __hs_sink(data, 0, hi)
+        hi -= 1 
+     
+def heap_sort(data):
+    global __hs_itr
+    __hs_itr = 0
+    n = len(data)
+    # construct max heap
+    __hs_construct_heap(data)
+    #logging.debug("Iteration %s : Heap : %s" % (__hs_itr, data))
+    # sort heap
+    __hs_sort_heap(data)
+    return data
+
