@@ -1,5 +1,5 @@
 ############################################
-### Copyright 2017 @ Kau Gon
+### Copyright 2017-2020 @ Kau Gon
 ############################################
 ## All elementery sort algos
 ############################################
@@ -37,16 +37,36 @@ def selection_sort(data):
 
 def insertion_sort(data):
     # sort data as it arrives
+    # i.e. element at ith position is always moved to right place
     # at ith iteration data on left of i is sorted
+    
     # data on right of i is not yet processed
+    # i.e. it doesnt access whole array during ith iteration, 
+    # bit opposite way to selection
+    # so by the end of the array for ith position, array is sorted on left so less compares are required.
+    
+    # note that in selection sort for an iteration we had O(N) compares, but only 1 exchange.
+    # in insertion sort we can have O(N) compares, but we need to do O(N) exhanges
+    # so it may seem to be slower... but.. 
+    # but in avg case total comparisons and exchanges are 1/4*O(N^2) i.e. less than selection sort.
+    
+    # with already sorted array, O(N) happens to be best case.
+    
+    # with reverse sorted array, it does all O(N^2) compares and exchanges and performs worst than 
+    # selection sort wrt exhanges.
+    
+    # For partially sorted i.e. avg case, with smaller N, insertion sort is still right one to use 
+    # (over merge/quick sort) for all practical purposes.
+    
+    
     itr = 0
     n = len(data)
     for i in range(n):
-        for j in range(i, 0, -1):
+        for j in range(i, 0, -1): # reverse loop: left side only loop
             itr += 1
-            if data[j] > data[j-1]:
+            if data[j] > data[j-1]: # found the right place
                 break
-            data[j-1], data[j] = data[j], data[j-1]
+            data[j-1], data[j] = data[j], data[j-1] # exchange at every step in inner loop
             #logging.debug("Iteration %s : %s" % (itr,data))
     return data
 
