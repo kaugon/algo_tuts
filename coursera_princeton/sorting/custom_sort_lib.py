@@ -55,7 +55,7 @@ def insertion_sort(data):
     # with reverse sorted array, it does all O(N^2) compares and exchanges and performs worst than 
     # selection sort wrt exhanges.
     
-    # For partially sorted i.e. avg case, with smaller N, insertion sort is still right one to use 
+    # For partially sorted array or for smaller N random array, insertion sort is still right one to use 
     # (over merge/quick sort) for all practical purposes.
     
     
@@ -77,6 +77,10 @@ def shell_sort(data):
     # instead of comparing every next element, cmp only hth element 
     # i.e. h-sorting array
     # keep decrementing step value h as per knuth sequence
+    
+    # as h goes lower, then use of base insertion sort works better 
+    # because array is partially sorted.
+    
     itr = 0
     n = len(data)
 
