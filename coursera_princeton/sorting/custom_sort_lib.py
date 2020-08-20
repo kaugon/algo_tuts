@@ -9,19 +9,27 @@ import random
 #########################
 
 def selection_sort(data):
-    ## - At ith iteration, element at ith position is at its right place
+    ## - At ith iteration, find the min element in the remaining array
+    ## - Exchange it with element at ith position 
+    ## - So at the end of ith iteration, element at ith position is 
+    ##   at its right place
+    
     ## - elements left of i, is sorted and smaller than a[i]
     ## - anything right of i, is larger than a[i]
+    
+    ## In best case scenario, if array is already sorted, its still going 
+    ## to go thru all O(N^2) compares. This sort is independent of input order
+    
     itr = 0
     n = len(data)
     for i in range(n):
-        min_i = i
+        min_index = i
         for j in range(i, n):
             itr += 1
-            if data[j] < data[min_i]:
-                min_i = j
-        if min_i != i:
-            data[min_i], data[i] = data[i], data[min_i]
+            if data[j] < data[min_index]:
+                min_index = j
+        if min_index != i:
+            data[min_index], data[i] = data[i], data[min_index]
         #logging.debug("Iteration %s : %s" % (itr,data))
     return data
 
