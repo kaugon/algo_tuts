@@ -64,7 +64,7 @@ def insertion_sort(data):
     for i in range(n):
         for j in range(i, 0, -1): # reverse loop: left side only loop
             itr += 1
-            if data[j] > data[j-1]: # found the right place
+            if data[j] >= data[j-1]: # found the right place
                 break
             data[j-1], data[j] = data[j], data[j-1] # exchange at every step in inner loop
             #logging.debug("Iteration %s : %s" % (itr,data))
